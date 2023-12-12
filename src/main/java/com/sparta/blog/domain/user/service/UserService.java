@@ -3,6 +3,7 @@ package com.sparta.blog.domain.user.service;
 import com.sparta.blog.domain.user.dto.request.SignupRequestDto;
 import com.sparta.blog.domain.user.entity.User;
 import com.sparta.blog.domain.user.repository.UserRepository;
+import com.sparta.blog.global.entity.UserRoleEnum;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,17 +14,28 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     public void signup(SignupRequestDto requestDto) {
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
         checkUsername(username);
-        checkPassword(password,username);
+        checkPassword(password, username);
+        UserRoleEnum role = UserRoleEnum.USER;
+        if (requestDto.isAdmin()) {
+            if (!ADMIN_TOKEN.equals(requestDto.getAdminToken())) {
+                throw new IllegalArgumentException("관리자 암호가 일치하지 않습니다.");
+            }
+            role = UserRoleEnum.ADMIN;
+        }
         User user = User.builder()
             .username(username)
             .password(password)
+            .role(role)
             .build();
         userRepository.save(user);
     }
@@ -37,7 +49,7 @@ public class UserService {
     }
 
     private void checkPassword(String password, String username) {
-        if (password.contains(username)){
+        if (password.contains(username)) {
             throw new IllegalArgumentException("username과 일치하지 않게 입력 해주세요");
         }
     }

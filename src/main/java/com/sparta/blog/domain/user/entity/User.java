@@ -1,5 +1,6 @@
 package com.sparta.blog.domain.user.entity;
 
+import com.sparta.blog.global.entity.UserRoleEnum;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,11 +22,13 @@ public class User {
 
     private String username;
     private String password;
+    private UserRoleEnum role;
 
     @Builder
-    public User(String username, String password) {
+    public User(String username, String password, UserRoleEnum role) {
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
 }

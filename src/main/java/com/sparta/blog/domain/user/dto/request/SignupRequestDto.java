@@ -10,5 +10,7 @@ public class SignupRequestDto {
 
     @Pattern(regexp = "^[a-zA-Z0-9]{4,}$", message = "대소문자 또는 숫자를 사용하여, 4글자 이상 입력해주세요.")
     private String password;
+    private boolean admin = false;
+    private String adminToken = "";
 
 }
