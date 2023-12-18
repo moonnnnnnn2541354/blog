@@ -1,11 +1,13 @@
 package com.sparta.blog.domain.blog.controller;
 
 import com.sparta.blog.domain.blog.dto.request.CreateBlogRequestDto;
+import com.sparta.blog.domain.blog.dto.response.BlogListResponseDto;
 import com.sparta.blog.domain.blog.dto.response.CreateBlogResponseDto;
 import com.sparta.blog.domain.blog.dto.response.SelectBlogResponseDto;
 import com.sparta.blog.domain.blog.service.BlogService;
 import com.sparta.blog.global.security.UserDetailsImpl;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +41,12 @@ public class BlogController {
 
         SelectBlogResponseDto responseDto = blogService.getBlog(blogId);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
+
+    @GetMapping("/every")
+    public ResponseEntity<List<BlogListResponseDto>> getBlogList() {
+        List<BlogListResponseDto> responseDtos = blogService.getBlogList();
+        return ResponseEntity.status(HttpStatus.OK).body(responseDtos);
     }
 
 }
