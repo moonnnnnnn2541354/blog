@@ -72,6 +72,13 @@ public class BlogService {
         return new UpdateBlogResponseDto(blog);
     }
 
+    @Transactional
+    public void delete(Long blogId, User user) {
+        Blog blog = checkBlogId(blogId);
+        checkUser(blog,user);
+        blogRepository.delete(blog);
+    }
+
 
     ////////////////////////////////////////////////////////////////////////
     public Blog checkBlogId(Long blogId) {
@@ -84,6 +91,7 @@ public class BlogService {
             throw new IllegalArgumentException("해당 게시물과 유저정보가 일치하지 않습니다.");
         }
     }
+
 
     ////////////////////////////////////////////////////////////////////////
 }
