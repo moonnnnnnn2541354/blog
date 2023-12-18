@@ -1,5 +1,6 @@
 package com.sparta.blog.domain.user.entity;
 
+import com.sparta.blog.global.entity.BaseTime;
 import com.sparta.blog.global.entity.UserRoleEnum;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Table(name = "users")
-public class User {
+public class User extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
