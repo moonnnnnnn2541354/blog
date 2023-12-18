@@ -28,8 +28,8 @@ public class JwtUtil {
     public static final String AUTHORIZATION_KEY = "auth";
     public static final String BEARER_PREFIX = "Bearer ";
 
-    private final long ACCESS_TOKEN_TIME = 30* 1 *1000l;
-    private final long REFRESH_TOKEN_TIME = 60*60*1000l*24*5;
+    private final long ACCESS_TOKEN_TIME = 10 * 1 * 1000L;
+    private final long REFRESH_TOKEN_TIME = 60 * 60 * 1000L * 24 * 5;
 
     @Value("${jwt.secret.key}")
     private String secretKey;
@@ -48,10 +48,10 @@ public class JwtUtil {
         return BEARER_PREFIX +
             Jwts.builder()
                 .setSubject(username)
-                .claim(AUTHORIZATION_KEY,roleEnum)
-                .setExpiration(new Date(date.getTime()+ACCESS_TOKEN_TIME))
+                .claim(AUTHORIZATION_KEY, roleEnum)
+                .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME))
                 .setIssuedAt(date)
-                .signWith(key,signatureAlgorithm)
+                .signWith(key, signatureAlgorithm)
                 .compact();
     }
 
@@ -60,15 +60,15 @@ public class JwtUtil {
 
         return BEARER_PREFIX +
             Jwts.builder()
-                .setExpiration(new Date(date.getTime()+REFRESH_TOKEN_TIME))
+                .setExpiration(new Date(date.getTime() + REFRESH_TOKEN_TIME))
                 .setIssuedAt(date)
-                .signWith(key,signatureAlgorithm)
+                .signWith(key, signatureAlgorithm)
                 .compact();
     }
 
     public String getJwtFromHeader(HttpServletRequest request, String token) {
         String bearerToken = request.getHeader(token);
-        if (StringUtils.hasText(bearerToken)&&bearerToken.startsWith(BEARER_PREFIX)) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.split(" ")[1].trim();
         }
         return null;

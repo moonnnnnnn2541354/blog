@@ -41,17 +41,18 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
         FilterChain chain) throws ServletException, IOException {
 
-        String accessToken = jwtUtil.getJwtFromHeader(request,ACCESS_TOKEN_HEADER);
-        if (StringUtils.hasText(accessToken)&&!jwtUtil.validateToken(accessToken)) {
-            String refreshToken = jwtUtil.getJwtFromHeader(request,REFRESH_TOKEN_HEADER);
+        String accessToken = jwtUtil.getJwtFromHeader(request, ACCESS_TOKEN_HEADER);
 
-            if (StringUtils.hasText(refreshToken)&& jwtUtil.validateToken(refreshToken)) {
+        if (StringUtils.hasText(accessToken) && !jwtUtil.validateToken(accessToken)) {
+            String refreshToken = jwtUtil.getJwtFromHeader(request, REFRESH_TOKEN_HEADER);
+
+            if (StringUtils.hasText(refreshToken) && jwtUtil.validateToken(refreshToken)) {
                 JwtEntity jwtEntity = jwtRepository.findByRefreshToken(refreshToken);
                 accessToken = jwtUtil.createAccessToken(
-                    jwtEntity.getUser().getUsername(),
-                    jwtEntity.getUser().getRole())
+                        jwtEntity.getUser().getUsername(),
+                        jwtEntity.getUser().getRole())
                     .split(" ")[1].trim();
-                response.addHeader(ACCESS_TOKEN_HEADER,BEARER_PREFIX + accessToken);
+                response.addHeader(ACCESS_TOKEN_HEADER, BEARER_PREFIX + accessToken);
             }
         }
 
@@ -65,12 +66,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             }
         }
 
-        chain.doFilter(request,response);
+        chain.doFilter(request, response);
     }
 
     public Authentication createAuthentication(String username) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-        return new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(userDetails, null,
+            userDetails.getAuthorities());
     }
 
     public void setAuthentication(String username) {
