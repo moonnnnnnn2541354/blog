@@ -3,6 +3,7 @@ package com.sparta.blog.domain.user.entity;
 import com.sparta.blog.domain.blog.entity.Blog;
 import com.sparta.blog.global.entity.BaseTime;
 import com.sparta.blog.global.entity.UserRoleEnum;
+import com.sparta.blog.global.jwt.entity.JwtEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,9 @@ public class User extends BaseTime {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserRoleEnum role;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    JwtEntity jwtEntity;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     List<Blog> blogList = new ArrayList<>();
