@@ -4,6 +4,8 @@ import com.sparta.blog.domain.user.dto.request.SignupRequestDto;
 import com.sparta.blog.domain.user.entity.User;
 import com.sparta.blog.domain.user.repository.UserRepository;
 import com.sparta.blog.global.entity.UserRoleEnum;
+import com.sparta.blog.global.jwt.entity.JwtEntity;
+import com.sparta.blog.global.jwt.repository.JwtRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,9 +19,11 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtRepository jwtRepository;
 
     private final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
+    @Transactional
     public void signup(SignupRequestDto requestDto) {
         String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
@@ -40,6 +44,12 @@ public class UserService {
         userRepository.save(user);
     }
 
+    @Transactional
+    public void logout(User user) {
+        JwtEntity refreshToken = jwtRepository.findByUserId(user.getId());
+        jwtRepository.delete(refreshToken);
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     private void checkUsername(String username) {
         Optional<User> checkUsername = userRepository.findByUsername(username);
@@ -53,5 +63,6 @@ public class UserService {
             throw new IllegalArgumentException("username과 일치하지 않게 입력 해주세요");
         }
     }
+
     ///////////////////////////////////////////////////////////////////////////
 }

@@ -5,7 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface JwtRepository extends JpaRepository<JwtEntity,Long> {
+public interface JwtRepository extends JpaRepository<JwtEntity, Long> {
 
     JwtEntity findByRefreshToken(String refreshToken);
+
+    JwtEntity findByUserId(Long id);
 }
