@@ -7,13 +7,16 @@ import com.sparta.blog.domain.blog.repository.BlogRepository;
 import com.sparta.blog.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BlogService {
 
     private final BlogRepository blogRepository;
 
+    @Transactional
     public CreateBlogResponseDto create(User user, CreateBlogRequestDto requestDto) {
         Blog blog = Blog.builder()
             .title(requestDto.getTitle())
