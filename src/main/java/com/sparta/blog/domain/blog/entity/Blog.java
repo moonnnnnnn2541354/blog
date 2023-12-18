@@ -1,6 +1,7 @@
 package com.sparta.blog.domain.blog.entity;
 
 import com.sparta.blog.domain.user.entity.User;
+import com.sparta.blog.global.entity.BaseTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -18,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @Table(name = "blogs")
-public class Blog {
+public class Blog extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
