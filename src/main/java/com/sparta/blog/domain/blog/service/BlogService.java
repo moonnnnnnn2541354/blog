@@ -45,6 +45,24 @@ public class BlogService {
         return blogList;
     }
 
+    public List<BlogListResponseDto> getMyBlogList(User user) {
+        List<Blog> blogs = blogRepository.findAllByUserOrderByModifiedAtDesc(user);
+        List<BlogListResponseDto> blogList = new ArrayList<>();
+        for (Blog blog : blogs) {
+            blogList.add(new BlogListResponseDto(blog));
+        }
+        return blogList;
+    }
+
+    public List<BlogListResponseDto> getUserBlogList(User user) {
+        List<Blog> blogs = blogRepository.findAllByUserNotOrderByModifiedAtDesc(user);
+        List<BlogListResponseDto> blogList = new ArrayList<>();
+        for (Blog blog : blogs) {
+            blogList.add(new BlogListResponseDto(blog));
+        }
+        return blogList;
+    }
+
 
     ////////////////////////////////////////////////////////////////////////
     public Blog checkBlogId(Long blogId) {

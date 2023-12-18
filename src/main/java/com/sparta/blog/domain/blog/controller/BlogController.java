@@ -49,4 +49,21 @@ public class BlogController {
         return ResponseEntity.status(HttpStatus.OK).body(responseDtos);
     }
 
+    @GetMapping("/my-blogs")
+    public ResponseEntity<List<BlogListResponseDto>> getMyBlogList(
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        List<BlogListResponseDto> responseDtos = blogService.getMyBlogList(userDetails.getUser());
+        return ResponseEntity.status(HttpStatus.OK).body(responseDtos);
+    }
+
+    @GetMapping("/user-blogs")
+    public ResponseEntity<List<BlogListResponseDto>> getUserBlogList(
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        List<BlogListResponseDto> responseDtos = blogService.getUserBlogList(userDetails.getUser());
+        return ResponseEntity.status(HttpStatus.OK).body(responseDtos);
+    }
+
+
 }
