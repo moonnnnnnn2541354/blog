@@ -12,14 +12,14 @@ public class CreateBlogResponseDto {
     private String username;
     private String title;
     private String text;
-    private LocalDateTime createAd;
+    private LocalDateTime date;
 
     public CreateBlogResponseDto(Blog blog, User user) {
         this.id = blog.getId();
         this.username = user.getUsername();
         this.title = blog.getTitle();
         this.text = blog.getText();
-        this.createAd = blog.getCreatedAt();
+        this.date = blog.getCreatedAt();
     }
 
 }
