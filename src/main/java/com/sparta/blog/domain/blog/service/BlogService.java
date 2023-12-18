@@ -1,9 +1,10 @@
 package com.sparta.blog.domain.blog.service;
 
-import com.sparta.blog.domain.blog.dto.request.CreateBlogRequestDto;
+import com.sparta.blog.domain.blog.dto.request.BlogRequestDto;
 import com.sparta.blog.domain.blog.dto.response.BlogListResponseDto;
 import com.sparta.blog.domain.blog.dto.response.CreateBlogResponseDto;
 import com.sparta.blog.domain.blog.dto.response.SelectBlogResponseDto;
+import com.sparta.blog.domain.blog.dto.response.UpdateBlogResponseDto;
 import com.sparta.blog.domain.blog.entity.Blog;
 import com.sparta.blog.domain.blog.repository.BlogRepository;
 import com.sparta.blog.domain.user.entity.User;
@@ -21,7 +22,7 @@ public class BlogService {
     private final BlogRepository blogRepository;
 
     @Transactional
-    public CreateBlogResponseDto create(User user, CreateBlogRequestDto requestDto) {
+    public CreateBlogResponseDto create(User user, BlogRequestDto requestDto) {
         Blog blog = Blog.builder()
             .title(requestDto.getTitle())
             .text(requestDto.getText())
@@ -63,11 +64,25 @@ public class BlogService {
         return blogList;
     }
 
+    @Transactional
+    public UpdateBlogResponseDto update(Long blogId, User user, BlogRequestDto requestDto) {
+        Blog blog = checkBlogId(blogId);
+        checkUser(blog,user);
+        blog.update(requestDto);
+        return new UpdateBlogResponseDto(blog);
+    }
+
 
     ////////////////////////////////////////////////////////////////////////
     public Blog checkBlogId(Long blogId) {
         return blogRepository.findById(blogId).orElseThrow(
             () -> new NullPointerException("해당 게시물이 존재하지 않습니다."));
+    }
+
+    public void checkUser(Blog blog,User user) {
+        if (blog.getUser().equals(user)) {
+            throw new IllegalArgumentException("해당 게시물과 유저정보가 일치하지 않습니다.");
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////

@@ -4,7 +4,7 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 
 @Getter
-public class CreateBlogRequestDto {
+public class BlogRequestDto {
     @Pattern(regexp = "^.{1,500}$")
     private String title;
 

@@ -1,5 +1,6 @@
 package com.sparta.blog.domain.blog.entity;
 
+import com.sparta.blog.domain.blog.dto.request.BlogRequestDto;
 import com.sparta.blog.domain.user.entity.User;
 import com.sparta.blog.global.entity.BaseTime;
 import jakarta.persistence.Column;
@@ -43,5 +44,8 @@ public class Blog extends BaseTime {
         this.user = user;
     }
 
-
+    public void update(BlogRequestDto requestDto) {
+        this.title = requestDto.getTitle();
+        this.text = requestDto.getText();
+    }
 }
