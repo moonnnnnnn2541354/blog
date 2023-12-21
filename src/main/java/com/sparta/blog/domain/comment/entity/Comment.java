@@ -1,6 +1,7 @@
 package com.sparta.blog.domain.comment.entity;
 
 import com.sparta.blog.domain.blog.entity.Blog;
+import com.sparta.blog.domain.comment.dto.request.UpdateCommentRequestDto;
 import com.sparta.blog.domain.user.entity.User;
 import com.sparta.blog.global.entity.BaseTime;
 import jakarta.persistence.Column;
@@ -49,4 +50,7 @@ public class Comment extends BaseTime {
     }
 
 
+    public void update(UpdateCommentRequestDto requestDto) {
+        this.text = text;
+    }
 }
