@@ -67,7 +67,7 @@ public class BlogService {
     @Transactional
     public UpdateBlogResponseDto update(Long blogId, User user, BlogRequestDto requestDto) {
         Blog blog = checkBlogId(blogId);
-        checkUser(blog,user);
+        checkUser(blog, user);
         blog.update(requestDto);
         return new UpdateBlogResponseDto(blog);
     }
@@ -75,7 +75,7 @@ public class BlogService {
     @Transactional
     public void delete(Long blogId, User user) {
         Blog blog = checkBlogId(blogId);
-        checkUser(blog,user);
+        checkUser(blog, user);
         blogRepository.delete(blog);
     }
 
@@ -86,12 +86,11 @@ public class BlogService {
             () -> new NullPointerException("해당 게시물이 존재하지 않습니다."));
     }
 
-    public void checkUser(Blog blog,User user) {
-        if (blog.getUser().equals(user)) {
+    public void checkUser(Blog blog, User user) {
+        if (!blog.getUser().equals(user)) {
             throw new IllegalArgumentException("해당 게시물과 유저정보가 일치하지 않습니다.");
         }
     }
-
 
     ////////////////////////////////////////////////////////////////////////
 }
