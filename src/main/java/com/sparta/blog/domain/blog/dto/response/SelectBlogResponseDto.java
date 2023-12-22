@@ -23,7 +23,7 @@ public class SelectBlogResponseDto {
         this.title = blog.getTitle();
         this.text = blog.getText();
         this.thumbsUpPoint = blog.getThumbsUpPoint();
-        this.date = blog.getModifiedAt();
+        this.date = blog.getCreatedAt();
         this.commentList = commentList;
     }
 

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import lombok.Getter;
 
 @Getter
-public class UpdateBlogResponseDto {
+public class BlogResponseDto {
 
     private Long id;
     private String username;
@@ -14,13 +14,13 @@ public class UpdateBlogResponseDto {
     private Long thumbsUpPoint;
     private LocalDateTime date;
 
-    public UpdateBlogResponseDto(Blog blog) {
+    public BlogResponseDto(Blog blog) {
         this.id = blog.getId();
         this.username = blog.getUser().getUsername();
         this.title = blog.getTitle();
         this.text = blog.getText();
         this.thumbsUpPoint = blog.getThumbsUpPoint();
-        this.date = blog.getModifiedAt();
+        this.date = blog.getCreatedAt();
     }
 
 }
