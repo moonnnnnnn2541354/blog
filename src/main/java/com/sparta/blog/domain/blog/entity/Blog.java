@@ -1,8 +1,10 @@
 package com.sparta.blog.domain.blog.entity;
 
 import com.sparta.blog.domain.blog.dto.request.BlogRequestDto;
+import com.sparta.blog.domain.comment.entity.Comment;
 import com.sparta.blog.domain.user.entity.User;
 import com.sparta.blog.global.entity.BaseTime;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,7 +13,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +41,9 @@ public class Blog extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    @OneToMany(mappedBy = "blog",cascade = CascadeType.REMOVE)
+    List<Comment> commentList = new ArrayList<>();
 
     @Builder
     public Blog(String title, String text, User user) {

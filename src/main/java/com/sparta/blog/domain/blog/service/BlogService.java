@@ -7,6 +7,9 @@ import com.sparta.blog.domain.blog.dto.response.SelectBlogResponseDto;
 import com.sparta.blog.domain.blog.dto.response.UpdateBlogResponseDto;
 import com.sparta.blog.domain.blog.entity.Blog;
 import com.sparta.blog.domain.blog.repository.BlogRepository;
+import com.sparta.blog.domain.comment.dto.response.CommentResponseDto;
+import com.sparta.blog.domain.comment.entity.Comment;
+import com.sparta.blog.domain.comment.repository.CommentRepository;
 import com.sparta.blog.domain.user.entity.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BlogService {
 
     private final BlogRepository blogRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public CreateBlogResponseDto create(User user, BlogRequestDto requestDto) {
@@ -34,7 +38,8 @@ public class BlogService {
 
     public SelectBlogResponseDto getBlog(Long blogId) {
         Blog blog = checkBlogId(blogId);
-        return new SelectBlogResponseDto(blog);
+        List<CommentResponseDto> commentList = getCommentList(blog);
+        return new SelectBlogResponseDto(blog, commentList);
     }
 
     public List<BlogListResponseDto> getBlogList() {
@@ -90,6 +95,16 @@ public class BlogService {
         if (!blog.getUser().getUsername().equals(user.getUsername())) {
             throw new IllegalArgumentException("해당 게시물과 유저정보가 일치하지 않습니다.");
         }
+    }
+
+    public List<CommentResponseDto> getCommentList(Blog blog) {
+        List<CommentResponseDto> responseDtoList = new ArrayList<>();
+        List<Comment> commentList = blog.getCommentList();
+        commentList.sort((o1, o2) -> o2.getCreatedAt().compareTo(o1.getCreatedAt()));
+        for (Comment comment : commentList) {
+            responseDtoList.add(new CommentResponseDto(comment));
+        }
+        return responseDtoList;
     }
 
     ////////////////////////////////////////////////////////////////////////
