@@ -53,4 +53,9 @@ public class Comment extends BaseTime {
     public void update(UpdateCommentRequestDto requestDto) {
         this.text = requestDto.getText();
     }
+
+    public Boolean isThumbsUp() {
+        this.thumbsUp =!thumbsUp;
+        return this.thumbsUp;
+    }
 }
