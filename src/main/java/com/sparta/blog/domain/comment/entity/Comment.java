@@ -51,6 +51,6 @@ public class Comment extends BaseTime {
 
 
     public void update(UpdateCommentRequestDto requestDto) {
-        this.text = text;
+        this.text = requestDto.getText();
     }
 }
