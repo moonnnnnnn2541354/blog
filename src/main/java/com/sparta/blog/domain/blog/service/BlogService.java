@@ -87,7 +87,7 @@ public class BlogService {
     }
 
     public void checkUser(Blog blog, User user) {
-        if (!blog.getUser().equals(user)) {
+        if (!blog.getUser().getUsername().equals(user.getUsername())) {
             throw new IllegalArgumentException("해당 게시물과 유저정보가 일치하지 않습니다.");
         }
     }
