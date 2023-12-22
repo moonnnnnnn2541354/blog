@@ -1,4 +1,6 @@
 # blog
+![image](https://github.com/moonnnnnnn2541354/blog/assets/143713388/f434cc6e-2468-4dd3-93d4-1a2d71a527df)
+
 ## 과제 구현 목록
 
 <details> 
