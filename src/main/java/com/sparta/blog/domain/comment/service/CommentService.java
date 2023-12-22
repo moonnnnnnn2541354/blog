@@ -61,7 +61,7 @@ public class CommentService {
     }
 
     private void checkUser(Comment comment, User user) {
-        if (!comment.getUser().equals(user)) {
+        if (!comment.getUser().getUsername().equals(user.getUsername())) {
             throw new IllegalArgumentException("해당 유저정보가 일치하지 않습니다.");
         }
     }
