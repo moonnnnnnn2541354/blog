@@ -8,7 +8,6 @@ import com.sparta.blog.global.jwt.entity.JwtEntity;
 import com.sparta.blog.global.jwt.repository.JwtRepository;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +26,7 @@ public class UserService {
     @Transactional
     public void signup(SignupRequestDto requestDto) {
         String username = requestDto.getUsername();
-        String password = BCrypt.hashpw(passwordEncoder.encode(requestDto.getPassword()), BCrypt.gensalt());
+        String password = passwordEncoder.encode(requestDto.getPassword());
         checkUsername(username);
         checkPassword(password, username);
         UserRoleEnum role = UserRoleEnum.USER;
