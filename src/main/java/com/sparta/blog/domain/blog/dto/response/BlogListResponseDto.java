@@ -11,6 +11,7 @@ public class BlogListResponseDto {
     private String username;
     private String title;
     private String text;
+    private Long thumbsUpPoint;
     private LocalDateTime date;
 
     public BlogListResponseDto(Blog blog) {
@@ -18,6 +19,7 @@ public class BlogListResponseDto {
         this.username = blog.getUser().getUsername();
         this.title = blog.getTitle();
         this.text = blog.getText();
+        this.thumbsUpPoint = blog.getThumbsUpPoint();
         this.date = blog.getModifiedAt();
     }
 

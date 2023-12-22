@@ -11,6 +11,7 @@ public class UpdateBlogResponseDto {
     private String username;
     private String title;
     private String text;
+    private Long thumbsUpPoint;
     private LocalDateTime date;
 
     public UpdateBlogResponseDto(Blog blog) {
@@ -18,6 +19,7 @@ public class UpdateBlogResponseDto {
         this.username = blog.getUser().getUsername();
         this.title = blog.getTitle();
         this.text = blog.getText();
+        this.thumbsUpPoint = blog.getThumbsUpPoint();
         this.date = blog.getModifiedAt();
     }
 

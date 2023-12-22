@@ -12,6 +12,7 @@ public class CreateBlogResponseDto {
     private String username;
     private String title;
     private String text;
+    private Long thumbsUpPoint;
     private LocalDateTime date;
 
     public CreateBlogResponseDto(Blog blog, User user) {
@@ -19,6 +20,7 @@ public class CreateBlogResponseDto {
         this.username = user.getUsername();
         this.title = blog.getTitle();
         this.text = blog.getText();
+        this.thumbsUpPoint = blog.getThumbsUpPoint();
         this.date = blog.getCreatedAt();
     }
 

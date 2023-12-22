@@ -9,7 +9,6 @@ import com.sparta.blog.domain.blog.entity.Blog;
 import com.sparta.blog.domain.blog.repository.BlogRepository;
 import com.sparta.blog.domain.comment.dto.response.CommentResponseDto;
 import com.sparta.blog.domain.comment.entity.Comment;
-import com.sparta.blog.domain.comment.repository.CommentRepository;
 import com.sparta.blog.domain.user.entity.User;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class BlogService {
 
     private final BlogRepository blogRepository;
-    private final CommentRepository commentRepository;
 
     @Transactional
     public CreateBlogResponseDto create(User user, BlogRequestDto requestDto) {
@@ -31,6 +29,7 @@ public class BlogService {
             .title(requestDto.getTitle())
             .text(requestDto.getText())
             .user(user)
+            .thumbsUpPoint(0L)
             .build();
         blogRepository.save(blog);
         return new CreateBlogResponseDto(blog, user);

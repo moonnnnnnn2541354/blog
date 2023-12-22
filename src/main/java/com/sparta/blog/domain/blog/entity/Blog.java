@@ -38,18 +38,22 @@ public class Blog extends BaseTime {
     @Column(nullable = false)
     private String text;
 
+    @Column(nullable = false)
+    private Long thumbsUpPoint;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(mappedBy = "blog",cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "blog", cascade = CascadeType.REMOVE)
     List<Comment> commentList = new ArrayList<>();
 
     @Builder
-    public Blog(String title, String text, User user) {
+    public Blog(String title, String text, User user, Long thumbsUpPoint) {
         this.title = title;
         this.text = text;
         this.user = user;
+        this.thumbsUpPoint = thumbsUpPoint;
     }
 
     public void update(BlogRequestDto requestDto) {
