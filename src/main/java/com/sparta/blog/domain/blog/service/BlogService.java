@@ -1,18 +1,22 @@
 package com.sparta.blog.domain.blog.service;
 
 import com.sparta.blog.domain.blog.dto.request.BlogRequestDto;
-import com.sparta.blog.domain.blog.dto.response.BlogListResponseDto;
+import com.sparta.blog.domain.blog.dto.response.BlogResponseDto;
 import com.sparta.blog.domain.blog.dto.response.CreateBlogResponseDto;
+import com.sparta.blog.domain.blog.dto.response.PagingResponseDto;
 import com.sparta.blog.domain.blog.dto.response.SelectBlogResponseDto;
-import com.sparta.blog.domain.blog.dto.response.UpdateBlogResponseDto;
 import com.sparta.blog.domain.blog.entity.Blog;
 import com.sparta.blog.domain.blog.repository.BlogRepository;
 import com.sparta.blog.domain.comment.dto.response.CommentResponseDto;
 import com.sparta.blog.domain.comment.entity.Comment;
 import com.sparta.blog.domain.user.entity.User;
+import com.sparta.blog.global.entity.UserRoleEnum;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,39 +45,45 @@ public class BlogService {
         return new SelectBlogResponseDto(blog, commentList);
     }
 
-    public List<BlogListResponseDto> getBlogList() {
-        List<Blog> blogs = blogRepository.findAllByOrderByModifiedAtDesc();
-        List<BlogListResponseDto> blogList = new ArrayList<>();
+    public Page<PagingResponseDto> getBlogList(
+        User user, int page, int size) {
+
+        Pageable pageable = PageRequest.of(page,size);
+
+        UserRoleEnum roleEnum = user.getRole();
+        Page<Blog> blogList;
+        if (roleEnum == UserRoleEnum.USER) {
+            blogList = blogRepository.findAllByUserOrderByCreatedAtDesc(user,pageable);
+        } else {
+            blogList = blogRepository.findAll(pageable);
+        }
+        return blogList.map(PagingResponseDto::new);
+    }
+
+    public List<BlogResponseDto> getMyBlogList(User user) {
+        List<Blog> blogs = blogRepository.findAllByUserOrderByCreatedAtDesc(user);
+        List<BlogResponseDto> blogList = new ArrayList<>();
         for (Blog blog : blogs) {
-            blogList.add(new BlogListResponseDto(blog));
+            blogList.add(new BlogResponseDto(blog));
         }
         return blogList;
     }
 
-    public List<BlogListResponseDto> getMyBlogList(User user) {
-        List<Blog> blogs = blogRepository.findAllByUserOrderByModifiedAtDesc(user);
-        List<BlogListResponseDto> blogList = new ArrayList<>();
+    public List<BlogResponseDto> getUserBlogList(User user) {
+        List<Blog> blogs = blogRepository.findAllByUserNotOrderByCreatedAtDesc(user);
+        List<BlogResponseDto> blogList = new ArrayList<>();
         for (Blog blog : blogs) {
-            blogList.add(new BlogListResponseDto(blog));
-        }
-        return blogList;
-    }
-
-    public List<BlogListResponseDto> getUserBlogList(User user) {
-        List<Blog> blogs = blogRepository.findAllByUserNotOrderByModifiedAtDesc(user);
-        List<BlogListResponseDto> blogList = new ArrayList<>();
-        for (Blog blog : blogs) {
-            blogList.add(new BlogListResponseDto(blog));
+            blogList.add(new BlogResponseDto(blog));
         }
         return blogList;
     }
 
     @Transactional
-    public UpdateBlogResponseDto update(Long blogId, User user, BlogRequestDto requestDto) {
+    public BlogResponseDto update(Long blogId, User user, BlogRequestDto requestDto) {
         Blog blog = checkBlogId(blogId);
         checkUser(blog, user);
         blog.update(requestDto);
-        return new UpdateBlogResponseDto(blog);
+        return new BlogResponseDto(blog);
     }
 
     @Transactional

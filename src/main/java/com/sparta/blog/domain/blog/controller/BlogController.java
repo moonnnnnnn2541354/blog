@@ -1,15 +1,16 @@
 package com.sparta.blog.domain.blog.controller;
 
 import com.sparta.blog.domain.blog.dto.request.BlogRequestDto;
-import com.sparta.blog.domain.blog.dto.response.BlogListResponseDto;
+import com.sparta.blog.domain.blog.dto.response.BlogResponseDto;
 import com.sparta.blog.domain.blog.dto.response.CreateBlogResponseDto;
+import com.sparta.blog.domain.blog.dto.response.PagingResponseDto;
 import com.sparta.blog.domain.blog.dto.response.SelectBlogResponseDto;
-import com.sparta.blog.domain.blog.dto.response.UpdateBlogResponseDto;
 import com.sparta.blog.domain.blog.service.BlogService;
 import com.sparta.blog.global.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -46,35 +48,38 @@ public class BlogController {
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
-    @GetMapping("/every")
-    public ResponseEntity<List<BlogListResponseDto>> getBlogList() {
-        List<BlogListResponseDto> responseDtos = blogService.getBlogList();
-        return ResponseEntity.status(HttpStatus.OK).body(responseDtos);
+    @GetMapping
+    public Page<PagingResponseDto> getBlogList(
+        @RequestParam("page") int page,
+        @RequestParam("size") int size,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+        return blogService.getBlogList(userDetails.getUser(), page, size);
     }
 
     @GetMapping("/my-blogs")
-    public ResponseEntity<List<BlogListResponseDto>> getMyBlogList(
+    public ResponseEntity<List<BlogResponseDto>> getMyBlogList(
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        List<BlogListResponseDto> responseDtos = blogService.getMyBlogList(userDetails.getUser());
+        List<BlogResponseDto> responseDtos = blogService.getMyBlogList(userDetails.getUser());
         return ResponseEntity.status(HttpStatus.OK).body(responseDtos);
     }
 
     @GetMapping("/user-blogs")
-    public ResponseEntity<List<BlogListResponseDto>> getUserBlogList(
+    public ResponseEntity<List<BlogResponseDto>> getUserBlogList(
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        List<BlogListResponseDto> responseDtos = blogService.getUserBlogList(userDetails.getUser());
+        List<BlogResponseDto> responseDtos = blogService.getUserBlogList(userDetails.getUser());
         return ResponseEntity.status(HttpStatus.OK).body(responseDtos);
     }
 
     @PutMapping("/{blogId}")
-    public ResponseEntity<UpdateBlogResponseDto> updateBlog(
+    public ResponseEntity<BlogResponseDto> updateBlog(
         @PathVariable(name = "blogId") Long blogId,
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestBody BlogRequestDto requestDto) {
 
-        UpdateBlogResponseDto responseDto = blogService.update(blogId, userDetails.getUser(),
+        BlogResponseDto responseDto = blogService.update(blogId, userDetails.getUser(),
             requestDto);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
@@ -84,7 +89,7 @@ public class BlogController {
         @PathVariable(name = "blogId") Long blogId,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-        blogService.delete(blogId,userDetails.getUser());
+        blogService.delete(blogId, userDetails.getUser());
         return ResponseEntity.status(HttpStatus.OK).body("해당 게시물이 삭제 되었습니다.");
     }
 
