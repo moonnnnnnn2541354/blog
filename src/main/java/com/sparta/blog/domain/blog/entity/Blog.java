@@ -60,4 +60,12 @@ public class Blog extends BaseTime {
         this.title = requestDto.getTitle();
         this.text = requestDto.getText();
     }
+
+    public void isThumbsUp(Boolean toggle) {
+        if (toggle) {
+            thumbsUpPoint++;
+            return;
+        }
+        thumbsUpPoint--;
+    }
 }
