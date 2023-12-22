@@ -3,7 +3,6 @@ package com.sparta.blog.domain.comment.controller;
 import com.sparta.blog.domain.comment.dto.request.CreateCommentRequestDto;
 import com.sparta.blog.domain.comment.dto.request.UpdateCommentRequestDto;
 import com.sparta.blog.domain.comment.dto.response.CreateCommentResponseDto;
-import com.sparta.blog.domain.comment.dto.response.ThumbsUpResponseDto;
 import com.sparta.blog.domain.comment.dto.response.UpdateCommentResponseDto;
 import com.sparta.blog.domain.comment.service.CommentService;
 import com.sparta.blog.global.security.UserDetailsImpl;
@@ -47,16 +46,6 @@ public class CommentController {
 
         UpdateCommentResponseDto responseDto = commentService.update(userDetails.getUser(), blogId,
             commentId, requestDto);
-        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
-    }
-
-    @PutMapping("/{commentId}/thumbsUp")
-    public ResponseEntity<ThumbsUpResponseDto> isThumbsUp(
-        @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @PathVariable(name = "blogId") Long blogId,
-        @PathVariable(name = "commentId") Long commentId) {
-
-        ThumbsUpResponseDto responseDto = commentService.isThumbsUp(userDetails.getUser(), blogId, commentId);
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 

@@ -30,9 +30,6 @@ public class Comment extends BaseTime {
     @Column(nullable = false)
     private String text;
 
-    @Column(nullable = false)
-    private Boolean thumbsUp;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user", nullable = false)
     private User user;
@@ -42,20 +39,13 @@ public class Comment extends BaseTime {
     private Blog blog;
 
     @Builder
-    public Comment(String text, Boolean thumbsUp, User user, Blog blog) {
+    public Comment(String text, User user, Blog blog) {
         this.text = text;
-        this.thumbsUp = thumbsUp;
         this.user = user;
         this.blog = blog;
     }
 
-
     public void update(UpdateCommentRequestDto requestDto) {
         this.text = requestDto.getText();
-    }
-
-    public Boolean isThumbsUp() {
-        this.thumbsUp =!thumbsUp;
-        return this.thumbsUp;
     }
 }

@@ -5,7 +5,6 @@ import com.sparta.blog.domain.blog.repository.BlogRepository;
 import com.sparta.blog.domain.comment.dto.request.CreateCommentRequestDto;
 import com.sparta.blog.domain.comment.dto.request.UpdateCommentRequestDto;
 import com.sparta.blog.domain.comment.dto.response.CreateCommentResponseDto;
-import com.sparta.blog.domain.comment.dto.response.ThumbsUpResponseDto;
 import com.sparta.blog.domain.comment.dto.response.UpdateCommentResponseDto;
 import com.sparta.blog.domain.comment.entity.Comment;
 import com.sparta.blog.domain.comment.repository.CommentRepository;
@@ -29,7 +28,6 @@ public class CommentService {
         Blog blog = checkBlog(blogId);
         Comment comment = Comment.builder()
             .text(requestDto.getText())
-            .thumbsUp(false)
             .user(user)
             .blog(blog)
             .build();
@@ -47,16 +45,6 @@ public class CommentService {
         comment.update(requestDto);
         return new UpdateCommentResponseDto(comment, user);
 
-    }
-
-    @Transactional
-    public ThumbsUpResponseDto isThumbsUp(User user, Long blogId,Long commentId) {
-
-        Comment comment = checkComment(commentId);
-        Blog blog = checkBlog(blogId);
-        checkUser(comment, user);
-        comment.isThumbsUp();
-        return new ThumbsUpResponseDto(comment.getThumbsUp());
     }
 
     @Transactional
