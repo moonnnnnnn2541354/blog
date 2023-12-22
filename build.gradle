@@ -22,6 +22,11 @@ repositories {
 }
 
 dependencies {
+
+	// 이메일인증 의존성 , Spring Context Support
+	implementation 'javax.mail:mail:1.4.7'
+	implementation 'org.springframework:spring-context-support:5.3.9'
+
 	// JWT
 	compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
 	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
